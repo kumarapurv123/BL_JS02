@@ -10,7 +10,6 @@ class AddressBook {
             throw new Error("Invalid contact. Must be an instance of Contact class.");
         }
 
-        // **UC6: Prevent duplicate entries**
         let duplicate = this.contacts.some(
             (c) => c.firstName === contact.firstName && c.lastName === contact.lastName
         );
@@ -33,54 +32,26 @@ class AddressBook {
         }
     }
 
-    editContact(firstName, lastName, updatedDetails) {
-        let contact = this.contacts.find(c => c.firstName === firstName && c.lastName === lastName);
-        
-        if (!contact) {
-            console.log(`Contact with name ${firstName} ${lastName} not found.`);
-            return;
-        }
+    searchByCity(city) {
+        let contactsInCity = this.contacts.filter(contact => contact.city.toLowerCase() === city.toLowerCase());
 
-        try {
-            Object.keys(updatedDetails).forEach(key => {
-                if (contact.hasOwnProperty(key)) {
-                    if (key === "firstName" || key === "lastName") {
-                        contact[key] = contact.validateName(updatedDetails[key], key);
-                    } else if (key === "address" || key === "city" || key === "state") {
-                        contact[key] = contact.validateAddressCityState(updatedDetails[key], key);
-                    } else if (key === "zip") {
-                        contact[key] = contact.validateZip(updatedDetails[key]);
-                    } else if (key === "phone") {
-                        contact[key] = contact.validatePhone(updatedDetails[key]);
-                    } else if (key === "email") {
-                        contact[key] = contact.validateEmail(updatedDetails[key]);
-                    } else {
-                        contact[key] = updatedDetails[key];
-                    }
-                }
-            });
-
-            console.log(`Contact ${firstName} ${lastName} updated successfully!`);
-        } catch (error) {
-            console.error(`Error updating contact: ${error.message}`);
+        if (contactsInCity.length === 0) {
+            console.log(`No contacts found in city: ${city}`);
+        } else {
+            console.log(`Contacts in city ${city}:`);
+            contactsInCity.forEach(contact => console.log(contact.toString()));
         }
     }
 
-    deleteContact(firstName, lastName) {
-        let index = this.contacts.findIndex(c => c.firstName === firstName && c.lastName === lastName);
+    searchByState(state) {
+        let contactsInState = this.contacts.filter(contact => contact.state.toLowerCase() === state.toLowerCase());
 
-        if (index === -1) {
-            console.log(`Contact with name ${firstName} ${lastName} not found.`);
-            return;
+        if (contactsInState.length === 0) {
+            console.log(`No contacts found in state: ${state}`);
+        } else {
+            console.log(`Contacts in state ${state}:`);
+            contactsInState.forEach(contact => console.log(contact.toString()));
         }
-
-        this.contacts.splice(index, 1);
-        console.log(`Contact ${firstName} ${lastName} deleted successfully!`);
-    }
-
-    countContacts() {
-        console.log(`Total Contacts: ${this.contacts.length}`);
-        return this.contacts.length;
     }
 }
 
@@ -96,16 +67,22 @@ try {
         "Jane", "Smith", "456 Elm St", "Los Angeles", "California", "654321", "9123456789", "jane.smith@example.com"
     );
 
-    let contactDuplicate = new Contact(
-        "John", "Doe", "789 Oak St", "Chicago", "Illinois", "987654", "9012345678", "john.duplicate@example.com"
+    let contact3 = new Contact(
+        "Emily", "Clark", "789 Maple St", "New York", "NewYork", "789456", "9012345678", "emily.clark@example.com"
     );
 
     addressBook.addContact(contact1);
     addressBook.addContact(contact2);
-    addressBook.addContact(contactDuplicate); // This should be blocked as a duplicate
+    addressBook.addContact(contact3);
 
     addressBook.displayContacts();
-    addressBook.countContacts();
+
+    console.log("\nSearching by City 'New York':");
+    addressBook.searchByCity("New York");
+
+    console.log("\nSearching by State 'California':");
+    addressBook.searchByState("California");
+
 } catch (error) {
     console.error(error.message);
 }
