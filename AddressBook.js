@@ -6,12 +6,22 @@ class AddressBook {
     }
 
     addContact(contact) {
-        if (contact instanceof Contact) {
-            this.contacts.push(contact);
-            console.log("Contact added successfully!");
-        } else {
+        if (!(contact instanceof Contact)) {
             throw new Error("Invalid contact. Must be an instance of Contact class.");
         }
+
+        // **UC6: Prevent duplicate entries**
+        let duplicate = this.contacts.some(
+            (c) => c.firstName === contact.firstName && c.lastName === contact.lastName
+        );
+
+        if (duplicate) {
+            console.log(`Contact with name ${contact.firstName} ${contact.lastName} already exists.`);
+            return;
+        }
+
+        this.contacts.push(contact);
+        console.log("Contact added successfully!");
     }
 
     displayContacts() {
@@ -68,7 +78,6 @@ class AddressBook {
         console.log(`Contact ${firstName} ${lastName} deleted successfully!`);
     }
 
-    // **UC6: Count the number of contacts in the Address Book**
     countContacts() {
         console.log(`Total Contacts: ${this.contacts.length}`);
         return this.contacts.length;
@@ -87,18 +96,16 @@ try {
         "Jane", "Smith", "456 Elm St", "Los Angeles", "California", "654321", "9123456789", "jane.smith@example.com"
     );
 
+    let contactDuplicate = new Contact(
+        "John", "Doe", "789 Oak St", "Chicago", "Illinois", "987654", "9012345678", "john.duplicate@example.com"
+    );
+
     addressBook.addContact(contact1);
     addressBook.addContact(contact2);
+    addressBook.addContact(contactDuplicate); // This should be blocked as a duplicate
+
     addressBook.displayContacts();
-
-    // **Count the total number of contacts**
-    addressBook.countContacts(); // Should print "Total Contacts: 2"
-
-    // Deleting a contact
-    addressBook.deleteContact("John", "Doe");
-
-    // **Count after deletion**
-    addressBook.countContacts(); // Should print "Total Contacts: 1"
+    addressBook.countContacts();
 } catch (error) {
     console.error(error.message);
 }
