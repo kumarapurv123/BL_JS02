@@ -71,3 +71,10 @@ try {
 } catch (error) {
     console.error(error.message);
 }
+try {
+    let contact2 = new Contact(
+        "jo", "smith", "xyz", "NY", "NY", "123", "12345678", "invalid.email"
+    ); // This should throw an error
+} catch (error) {
+    console.error(error.message);
+}
