@@ -32,7 +32,6 @@ class AddressBook {
         }
 
         try {
-            // Apply validation before updating
             Object.keys(updatedDetails).forEach(key => {
                 if (contact.hasOwnProperty(key)) {
                     if (key === "firstName" || key === "lastName") {
@@ -46,7 +45,7 @@ class AddressBook {
                     } else if (key === "email") {
                         contact[key] = contact.validateEmail(updatedDetails[key]);
                     } else {
-                        contact[key] = updatedDetails[key]; // Assign other properties directly
+                        contact[key] = updatedDetails[key];
                     }
                 }
             });
@@ -55,6 +54,19 @@ class AddressBook {
         } catch (error) {
             console.error(`Error updating contact: ${error.message}`);
         }
+    }
+
+    // **UC5: Delete a contact by first and last name**
+    deleteContact(firstName, lastName) {
+        let index = this.contacts.findIndex(c => c.firstName === firstName && c.lastName === lastName);
+
+        if (index === -1) {
+            console.log(`Contact with name ${firstName} ${lastName} not found.`);
+            return;
+        }
+
+        this.contacts.splice(index, 1);
+        console.log(`Contact ${firstName} ${lastName} deleted successfully!`);
     }
 }
 
@@ -69,10 +81,10 @@ try {
     addressBook.addContact(contact1);
     addressBook.displayContacts();
 
-    // Editing Contact with validation
-    addressBook.editContact("John", "Doe", { address: "456 Park Ave", city: "Los Angeles", state: "CA", phone: "9123456789" });
+    // **Deleting a contact**
+    addressBook.deleteContact("John", "Doe");
 
-    addressBook.displayContacts(); // Updated Contact Details
+    addressBook.displayContacts(); // Should be empty after deletion
 } catch (error) {
     console.error(error.message);
 }
