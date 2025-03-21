@@ -32,30 +32,20 @@ class AddressBook {
         }
     }
 
-    getContactCountByCity() {
-        let cityCount = new Map();
+    sortContactsByName() {
+        if (this.contacts.length === 0) {
+            console.log("Address Book is empty. Nothing to sort.");
+            return;
+        }
 
-        this.contacts.forEach(contact => {
-            cityCount.set(contact.city, (cityCount.get(contact.city) || 0) + 1);
+        this.contacts.sort((a, b) => {
+            let nameA = a.firstName.toLowerCase();
+            let nameB = b.firstName.toLowerCase();
+            return nameA.localeCompare(nameB);
         });
 
-        console.log("\nNumber of Contacts by City:");
-        cityCount.forEach((count, city) => {
-            console.log(`${city}: ${count}`);
-        });
-    }
-
-    getContactCountByState() {
-        let stateCount = new Map();
-
-        this.contacts.forEach(contact => {
-            stateCount.set(contact.state, (stateCount.get(contact.state) || 0) + 1);
-        });
-
-        console.log("\nNumber of Contacts by State:");
-        stateCount.forEach((count, state) => {
-            console.log(`${state}: ${count}`);
-        });
+        console.log("\nContacts Sorted Alphabetically by First Name:");
+        this.displayContacts();
     }
 }
 
@@ -81,11 +71,8 @@ try {
 
     addressBook.displayContacts();
 
-    console.log("\nCounting Contacts by City:");
-    addressBook.getContactCountByCity();
-
-    console.log("\nCounting Contacts by State:");
-    addressBook.getContactCountByState();
+    console.log("\nSorting Contacts Alphabetically by Name:");
+    addressBook.sortContactsByName();
 
 } catch (error) {
     console.error(error.message);
