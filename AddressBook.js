@@ -32,26 +32,38 @@ class AddressBook {
         }
     }
 
-    searchByCity(city) {
-        let contactsInCity = this.contacts.filter(contact => contact.city.toLowerCase() === city.toLowerCase());
+    viewContactsByCity() {
+        let cityMap = new Map();
 
-        if (contactsInCity.length === 0) {
-            console.log(`No contacts found in city: ${city}`);
-        } else {
-            console.log(`Contacts in city ${city}:`);
-            contactsInCity.forEach(contact => console.log(contact.toString()));
-        }
+        this.contacts.forEach(contact => {
+            if (!cityMap.has(contact.city)) {
+                cityMap.set(contact.city, []);
+            }
+            cityMap.get(contact.city).push(contact.toString());
+        });
+
+        console.log("\nContacts grouped by City:");
+        cityMap.forEach((contacts, city) => {
+            console.log(`\nCity: ${city}`);
+            contacts.forEach(contact => console.log(contact));
+        });
     }
 
-    searchByState(state) {
-        let contactsInState = this.contacts.filter(contact => contact.state.toLowerCase() === state.toLowerCase());
+    viewContactsByState() {
+        let stateMap = new Map();
 
-        if (contactsInState.length === 0) {
-            console.log(`No contacts found in state: ${state}`);
-        } else {
-            console.log(`Contacts in state ${state}:`);
-            contactsInState.forEach(contact => console.log(contact.toString()));
-        }
+        this.contacts.forEach(contact => {
+            if (!stateMap.has(contact.state)) {
+                stateMap.set(contact.state, []);
+            }
+            stateMap.get(contact.state).push(contact.toString());
+        });
+
+        console.log("\nContacts grouped by State:");
+        stateMap.forEach((contacts, state) => {
+            console.log(`\nState: ${state}`);
+            contacts.forEach(contact => console.log(contact));
+        });
     }
 }
 
@@ -77,11 +89,11 @@ try {
 
     addressBook.displayContacts();
 
-    console.log("\nSearching by City 'New York':");
-    addressBook.searchByCity("New York");
+    console.log("\nViewing Contacts by City:");
+    addressBook.viewContactsByCity();
 
-    console.log("\nSearching by State 'California':");
-    addressBook.searchByState("California");
+    console.log("\nViewing Contacts by State:");
+    addressBook.viewContactsByState();
 
 } catch (error) {
     console.error(error.message);
