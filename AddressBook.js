@@ -32,37 +32,29 @@ class AddressBook {
         }
     }
 
-    viewContactsByCity() {
-        let cityMap = new Map();
+    getContactCountByCity() {
+        let cityCount = new Map();
 
         this.contacts.forEach(contact => {
-            if (!cityMap.has(contact.city)) {
-                cityMap.set(contact.city, []);
-            }
-            cityMap.get(contact.city).push(contact.toString());
+            cityCount.set(contact.city, (cityCount.get(contact.city) || 0) + 1);
         });
 
-        console.log("\nContacts grouped by City:");
-        cityMap.forEach((contacts, city) => {
-            console.log(`\nCity: ${city}`);
-            contacts.forEach(contact => console.log(contact));
+        console.log("\nNumber of Contacts by City:");
+        cityCount.forEach((count, city) => {
+            console.log(`${city}: ${count}`);
         });
     }
 
-    viewContactsByState() {
-        let stateMap = new Map();
+    getContactCountByState() {
+        let stateCount = new Map();
 
         this.contacts.forEach(contact => {
-            if (!stateMap.has(contact.state)) {
-                stateMap.set(contact.state, []);
-            }
-            stateMap.get(contact.state).push(contact.toString());
+            stateCount.set(contact.state, (stateCount.get(contact.state) || 0) + 1);
         });
 
-        console.log("\nContacts grouped by State:");
-        stateMap.forEach((contacts, state) => {
-            console.log(`\nState: ${state}`);
-            contacts.forEach(contact => console.log(contact));
+        console.log("\nNumber of Contacts by State:");
+        stateCount.forEach((count, state) => {
+            console.log(`${state}: ${count}`);
         });
     }
 }
@@ -89,11 +81,11 @@ try {
 
     addressBook.displayContacts();
 
-    console.log("\nViewing Contacts by City:");
-    addressBook.viewContactsByCity();
+    console.log("\nCounting Contacts by City:");
+    addressBook.getContactCountByCity();
 
-    console.log("\nViewing Contacts by State:");
-    addressBook.viewContactsByState();
+    console.log("\nCounting Contacts by State:");
+    addressBook.getContactCountByState();
 
 } catch (error) {
     console.error(error.message);
