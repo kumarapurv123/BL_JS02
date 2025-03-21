@@ -56,7 +56,6 @@ class AddressBook {
         }
     }
 
-    // **UC5: Delete a contact by first and last name**
     deleteContact(firstName, lastName) {
         let index = this.contacts.findIndex(c => c.firstName === firstName && c.lastName === lastName);
 
@@ -68,6 +67,12 @@ class AddressBook {
         this.contacts.splice(index, 1);
         console.log(`Contact ${firstName} ${lastName} deleted successfully!`);
     }
+
+    // **UC6: Count the number of contacts in the Address Book**
+    countContacts() {
+        console.log(`Total Contacts: ${this.contacts.length}`);
+        return this.contacts.length;
+    }
 }
 
 // Example Usage:
@@ -78,13 +83,22 @@ try {
         "John", "Doe", "123 Main St", "New York", "NewYork", "123456", "9876543210", "john.doe@example.com"
     );
     
+    let contact2 = new Contact(
+        "Jane", "Smith", "456 Elm St", "Los Angeles", "California", "654321", "9123456789", "jane.smith@example.com"
+    );
+
     addressBook.addContact(contact1);
+    addressBook.addContact(contact2);
     addressBook.displayContacts();
 
-    // **Deleting a contact**
+    // **Count the total number of contacts**
+    addressBook.countContacts(); // Should print "Total Contacts: 2"
+
+    // Deleting a contact
     addressBook.deleteContact("John", "Doe");
 
-    addressBook.displayContacts(); // Should be empty after deletion
+    // **Count after deletion**
+    addressBook.countContacts(); // Should print "Total Contacts: 1"
 } catch (error) {
     console.error(error.message);
 }
